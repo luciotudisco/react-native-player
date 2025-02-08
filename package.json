@@ -10,7 +10,7 @@
     "test:watch": "jest --watchAll",
     "test": "jest",
     "lint:fix": "eslint . --fix",
-    "lint": "expo lint -- --write",
+    "lint": "expo lint",
     "prettier:fix": "prettier --write .",
     "prepare": "husky install"
   },
