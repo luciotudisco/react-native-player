@@ -10,7 +10,6 @@ import 'react-native-reanimated';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/Geologica-Regular.ttf'),
   });
@@ -27,10 +26,10 @@ export default function RootLayout() {
 
   return (
     <GluestackUIProvider mode="light">
-        <Stack>
-          <Stack.Screen name="/" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
+      <Stack>
+        <Stack.Screen name="/" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
     </GluestackUIProvider>
   );
 }
