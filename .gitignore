@@ -134,3 +134,6 @@ dist
 
 expo-env.d.ts
 # @end expo-cli
+
+# Mac files
+.DS_Store
