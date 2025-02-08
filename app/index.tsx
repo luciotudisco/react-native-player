@@ -1,12 +1,16 @@
+import PlayList from '@/components/PlayList';
+import { useAudioPlayerStore } from '@/store/store';
 import { Stack } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-export default function NotFoundScreen() {
+export default function HomeScreen() {
+  const currentPlaylist = useAudioPlayerStore((state) => state.playlist);
+
   return (
     <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
+      <Stack.Screen options={{ title: currentPlaylist.name }} />
       <View style={styles.container}>
-        <Text>Welcome</Text>
+        <PlayList />
       </View>
     </>
   );
@@ -15,8 +19,6 @@ export default function NotFoundScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+    width: '100%',
   },
 });
