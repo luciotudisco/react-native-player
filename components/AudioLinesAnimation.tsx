@@ -46,7 +46,7 @@ export default function AudioLineAnimation({
       barsRef.current.forEach((bar) => {
         bar.value = withTiming(Math.random() * maxBarHeight, {
           duration: 200,
-          easing: Easing.inOut(Easing.bounce),
+          easing: Easing.inOut(Easing.ease),
         });
       });
     }, 200);

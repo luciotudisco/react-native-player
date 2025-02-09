@@ -1,6 +1,12 @@
-# Welcome to the React Navite Player 👋
+# Welcome to the Awesome React Navite Player 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+
+The Audio player is based on the [Expo AV](https://docs.expo.dev/versions/latest/sdk/av) library.
+
+The UI components are based on [gluestack.io](https://https://gluestack.io) library.
+
+The state of the player is managed via [zustand](https://zustand-demo.pmnd.rs/).
 
 ## Get started
 

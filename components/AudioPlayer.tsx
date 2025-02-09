@@ -4,7 +4,7 @@ import { Box } from './ui/box';
 import { useAudioPlayerStore } from '@/store/store';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from '@/components/ui/text';
-import { ChevronRight, ChevronLeft, PlayIcon, PauseIcon } from 'lucide-react-native';
+import { PlayIcon, PauseIcon, FastForwardIcon, SkipForwardIcon, SkipBackIcon, RewindIcon } from 'lucide-react-native';
 import { Slider, SliderFilledTrack, SliderThumb, SliderTrack } from '@/components/ui/slider';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
@@ -46,22 +46,27 @@ export function AudioPlayer() {
         if (status.isLoaded) {
           setPlaybackStatus(status);
           if (status.didJustFinish) {
-            // Play the next track when the current track finishes
-            onNext();
+            playNext(); // Play the next track when the current track finishes
           }
         }
       });
     }
   }, [currentTrack.sound]);
 
-  const onNext = async () => {
+  const playNext = async () => {
     next();
     await play();
   };
 
-  const onPrevious = async () => {
+  const playPrevious = async () => {
     previous();
     await play();
+  };
+
+  const seek = async (value: number) => {
+    if (currentTrack.sound) {
+      await currentTrack.sound.setPositionAsync(value);
+    }
   };
 
   return (
@@ -72,7 +77,7 @@ export function AudioPlayer() {
           <SliderTrack style={styles.sliderTrack}>
             <SliderFilledTrack />
           </SliderTrack>
-          <SliderThumb />
+          <SliderThumb size="lg" />
         </Slider>
         <View style={styles.sliderDuration}>
           <Text style={styles.durationLabel}>{dayjs.duration(positionMillis, 'milliseconds').format('mm:ss')}</Text>
@@ -83,23 +88,37 @@ export function AudioPlayer() {
       </Box>
       <Box style={styles.buttonsBar}>
         <TouchableOpacity
-          onPress={onPrevious}
+          onPress={playPrevious}
           style={styles.button}
           aria-label="Previous track"
           disabled={!showPreviousButton}>
-          <ChevronLeft size={32} color="white" strokeOpacity={showPreviousButton ? 1 : 0.2} />
+          <SkipBackIcon size={28} color="white" strokeOpacity={showPreviousButton ? 1 : 0.5} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          disabled={!currentTrack.isPlaying}
+          onPress={() => seek(Math.max(positionMillis - 5000, 0))}
+          style={styles.button}
+          aria-label="Fast Forward">
+          <RewindIcon size={28} color="white" opacity={currentTrack.isPlaying ? 1 : 0.5} />
         </TouchableOpacity>
         {!currentTrack.isPlaying ? (
           <TouchableOpacity onPress={play} style={styles.button} aria-label="Play track">
-            <PlayIcon size={32} color="white" />
+            <PlayIcon size={48} color="white" />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity onPress={pause} style={styles.button} aria-label="Pause track">
-            <PauseIcon size={32} color="white" />
+            <PauseIcon size={48} color="white" />
           </TouchableOpacity>
         )}
-        <TouchableOpacity onPress={onNext} style={styles.button} aria-label="Next track" disabled={!showNextButton}>
-          <ChevronRight size={32} color="white" strokeOpacity={showNextButton ? 1 : 0.2} />
+        <TouchableOpacity
+          disabled={!currentTrack.isPlaying}
+          onPress={() => seek(Math.min(positionMillis + 5000, durationMillis))}
+          style={styles.button}
+          aria-label="Fast Forward">
+          <FastForwardIcon size={28} color="white" opacity={currentTrack.isPlaying ? 1 : 0.5} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={playNext} style={styles.button} aria-label="Next track" disabled={!showNextButton}>
+          <SkipForwardIcon size={28} color="white" strokeOpacity={showNextButton ? 1 : 0.5} />
         </TouchableOpacity>
       </Box>
     </Box>
