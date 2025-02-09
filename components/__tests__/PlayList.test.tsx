@@ -7,15 +7,16 @@ import { DEMO_PLAYLIST } from '@/model/track';
 jest.mock('@/store/store');
 
 describe('PlayList Component', () => {
-  const mockShowAudioPlayerCallback = jest.fn();
+  const mockIsPlaying = jest.fn().mockReturnValue(false);
   const mockPlay = jest.fn();
   const mockSetTrack = jest.fn();
+  const mockShowAudioPlayerCallback = jest.fn();
 
   beforeEach(() => {
     (useAudioPlayerStore as unknown as jest.Mock).mockImplementation((selector: any) =>
       selector({
         playlist: DEMO_PLAYLIST,
-        currentTrack: { isPlaying: false, sound: undefined, item: DEMO_PLAYLIST.items[0] },
+        currentTrack: { isPlaying: mockIsPlaying, sound: undefined, item: DEMO_PLAYLIST.items[0] },
         play: mockPlay,
         setTrack: mockSetTrack,
       }),
@@ -50,5 +51,13 @@ describe('PlayList Component', () => {
     await waitFor(() => expect(mockSetTrack).toHaveBeenCalledWith(DEMO_PLAYLIST.items[0]));
     expect(mockPlay).toHaveBeenCalled();
     expect(mockShowAudioPlayerCallback).toHaveBeenCalled();
+  });
+
+  it('renders the audio line animation when the current track is playing', () => {
+    mockIsPlaying.mockReturnValue(true);
+    const { getByTestId } = render(<PlayList showAudioPlayerCallback={mockShowAudioPlayerCallback} />);
+
+    const audioLineAnimation = getByTestId('audio-line-animation');
+    expect(audioLineAnimation).toBeTruthy();
   });
 });

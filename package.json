@@ -8,14 +8,29 @@
     "ios": "DARK_MODE=media expo start --ios",
     "web": "DARK_MODE=media expo start --web",
     "test:watch": "jest --watchAll",
-    "test": "jest --transformIgnorePatterns \"node_modules/(?!@gluestack-ui)/\" --coverage",
+    "test": "jest --no-cache --coverage",
     "lint:fix": "eslint . --fix",
     "lint": "expo lint",
     "prettier:fix": "prettier --write .",
     "prepare": "husky install"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "coveragePathIgnorePatterns": [
+      "/components/ui",
+      "/node_modules/"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!@gluestack-ui)/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
   },
   "husky": {
     "hooks": {

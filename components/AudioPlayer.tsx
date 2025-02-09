@@ -8,9 +8,18 @@ import { PlayIcon, PauseIcon, FastForwardIcon, SkipForwardIcon, SkipBackIcon, Re
 import { Slider, SliderFilledTrack, SliderThumb, SliderTrack } from '@/components/ui/slider';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import PlayListItemThumbnail from './PlayListItemThumbnail';
+import PlayListItemThumbnail from '@/components/PlayListItemThumbnail';
+import { IconButton } from '@/components/IconButton';
 dayjs.extend(duration);
 
+/**
+ * The number of milliseconds to seek forward or backward when the user presses the fast forward or rewind buttons.
+ */
+const SEEK_DELTA_MILLIS = 5000;
+
+/**
+ * The AudioPlayer component with play, pause, next, and previous buttons.
+ */
 export function AudioPlayer() {
   const [playbackStatus, setPlaybackStatus] = useState<AVPlaybackStatus | null>(null);
   const currentTrack = useAudioPlayerStore((state) => state.currentTrack);
@@ -87,39 +96,35 @@ export function AudioPlayer() {
         </View>
       </Box>
       <Box style={styles.buttonsBar}>
-        <TouchableOpacity
+        <IconButton
           onPress={playPrevious}
-          style={styles.button}
-          aria-label="Previous track"
-          disabled={!showPreviousButton}>
-          <SkipBackIcon size={28} color="white" strokeOpacity={showPreviousButton ? 1 : 0.5} />
-        </TouchableOpacity>
-        <TouchableOpacity
+          accessibilityLabel="Previous track"
+          disabled={!showPreviousButton}
+          icon={<SkipBackIcon size={28} color="white" />}
+        />
+        <IconButton
+          onPress={() => seek(Math.max(positionMillis - SEEK_DELTA_MILLIS, 0))}
+          accessibilityLabel="Rewind track"
           disabled={!currentTrack.isPlaying}
-          onPress={() => seek(Math.max(positionMillis - 5000, 0))}
-          style={styles.button}
-          aria-label="Fast Forward">
-          <RewindIcon size={28} color="white" opacity={currentTrack.isPlaying ? 1 : 0.5} />
-        </TouchableOpacity>
+          icon={<RewindIcon size={28} color="white" />}
+        />
         {!currentTrack.isPlaying ? (
-          <TouchableOpacity onPress={play} style={styles.button} aria-label="Play track">
-            <PlayIcon size={48} color="white" />
-          </TouchableOpacity>
+          <IconButton onPress={play} accessibilityLabel="Play track" icon={<PlayIcon size={48} color="white" />} />
         ) : (
-          <TouchableOpacity onPress={pause} style={styles.button} aria-label="Pause track">
-            <PauseIcon size={48} color="white" />
-          </TouchableOpacity>
+          <IconButton onPress={pause} accessibilityLabel="Pause track" icon={<PauseIcon size={48} color="white" />} />
         )}
-        <TouchableOpacity
+        <IconButton
+          onPress={() => seek(Math.min(positionMillis + SEEK_DELTA_MILLIS, durationMillis))}
+          accessibilityLabel="Fast Forward"
           disabled={!currentTrack.isPlaying}
-          onPress={() => seek(Math.min(positionMillis + 5000, durationMillis))}
-          style={styles.button}
-          aria-label="Fast Forward">
-          <FastForwardIcon size={28} color="white" opacity={currentTrack.isPlaying ? 1 : 0.5} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={playNext} style={styles.button} aria-label="Next track" disabled={!showNextButton}>
-          <SkipForwardIcon size={28} color="white" strokeOpacity={showNextButton ? 1 : 0.5} />
-        </TouchableOpacity>
+          icon={<FastForwardIcon size={28} color="white" />}
+        />
+        <IconButton
+          onPress={playNext}
+          accessibilityLabel="Next track"
+          disabled={!showNextButton}
+          icon={<SkipForwardIcon size={28} color="white" />}
+        />
       </Box>
     </Box>
   );
@@ -164,12 +169,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    borderRadius: 50,
-    justifyContent: 'center',
   },
 });
 

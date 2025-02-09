@@ -33,10 +33,8 @@ export default function AudioLineAnimation({
   intervalDuration?: number;
 }) {
   const barsRef = useRef<SharedValue<number>[]>([]);
-  if (barsRef.current) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    barsRef.current = Array.from({ length: numberOfBars }, () => useSharedValue(0));
-  }
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  barsRef.current = Array.from({ length: numberOfBars }, () => useSharedValue(0));
 
   /**
    * Randomly animate each bar on an interval.
@@ -56,7 +54,7 @@ export default function AudioLineAnimation({
   }, [maxBarHeight, numberOfBars]);
 
   return (
-    <View style={[styles.container, { height: maxBarHeight }]}>
+    <View style={[styles.container, { height: maxBarHeight }]} testID="audio-line-animation">
       {barsRef.current.map((bar, index) => (
         <AudioBar key={index} bar={bar} color={color} />
       ))}
