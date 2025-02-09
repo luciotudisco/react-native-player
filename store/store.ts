@@ -20,6 +20,7 @@ interface AudioPlayerActions {
   pause: () => Promise<void>;
   play: () => Promise<void>;
   previous: () => void;
+  resume: () => Promise<void>;
   setTrack: (item: PlayListItem) => void;
 }
 
@@ -71,6 +72,13 @@ export const useAudioPlayerStore = create<AudioPlayerState & AudioPlayerActions>
       return;
     }
     set({ currentTrack: { ...currentTrack, item: playlist.items[currentIndex - 1] } });
+  },
+  resume: async () => {
+    const { currentTrack } = get();
+    if (currentTrack.sound) {
+      currentTrack.sound.playAsync();
+      set((state) => ({ currentTrack: { ...state.currentTrack, isPlaying: true } }));
+    }
   },
   setTrack: (item: PlayListItem) => set((state) => ({ currentTrack: { ...state.currentTrack, item } })),
 }));

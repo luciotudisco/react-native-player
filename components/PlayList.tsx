@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FlatList, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Box } from '@/components/ui/box';
 import { Image } from '@/components/ui/image';
@@ -21,6 +21,19 @@ const PlayList = (props: PlayListProps) => {
   const currentTrack = useAudioPlayerStore((state) => state.currentTrack);
   const play = useAudioPlayerStore((state) => state.play);
   const setTrack = useAudioPlayerStore((state) => state.setTrack);
+  const flatListRef = useRef<FlatList<PlayListItem>>(null);
+
+  /**
+   * Automatically scroll to the current track when it changes.
+   */
+  useEffect(() => {
+    if (currentTrack.item) {
+      const index = playlist.items.findIndex(item => item.id === currentTrack.item.id);
+      if (index !== -1 && flatListRef.current) {
+        flatListRef.current.scrollToIndex({ index, animated: true });
+      }
+    }
+  }, [currentTrack, playlist.items]);
 
   /**
    * Play the selected track.
@@ -52,6 +65,7 @@ const PlayList = (props: PlayListProps) => {
         ItemSeparatorComponent={Divider}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
+        ref={flatListRef}
       />
     </SafeAreaView>
   );

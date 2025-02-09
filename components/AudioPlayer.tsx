@@ -18,6 +18,11 @@ dayjs.extend(duration);
 const SEEK_DELTA_MILLIS = 5000;
 
 /**
+ * The factor by which to multiply the seek delta when the user long presses the fast forward or rewind buttons.
+ */
+const SEEK_LONG_PRESS_FACTOR = 3;
+
+/**
  * The AudioPlayer component with play, pause, next, and previous buttons.
  */
 export function AudioPlayer() {
@@ -29,6 +34,7 @@ export function AudioPlayer() {
   const pause = useAudioPlayerStore((state) => state.pause);
   const play = useAudioPlayerStore((state) => state.play);
   const previous = useAudioPlayerStore((state) => state.previous);
+  const resume = useAudioPlayerStore((state) => state.resume);
 
   const positionMillis = playbackStatus?.isLoaded ? (playbackStatus.positionMillis ?? 0) : 0;
   const durationMillis = playbackStatus?.isLoaded ? (playbackStatus.durationMillis ?? 0) : 0;
@@ -108,7 +114,11 @@ export function AudioPlayer() {
           icon={<RewindIcon size={28} color="white" />}
         />
         {!currentTrack.isPlaying ? (
-          <IconButton onPress={play} accessibilityLabel="Play track" icon={<PlayIcon size={48} color="white" />} />
+          <IconButton
+            onPress={currentTrack.sound ? resume : play}
+            accessibilityLabel="Play track"
+            icon={<PlayIcon size={48} color="white" />}
+          />
         ) : (
           <IconButton onPress={pause} accessibilityLabel="Pause track" icon={<PauseIcon size={48} color="white" />} />
         )}

@@ -125,7 +125,7 @@ describe('useAudioPlayerStore', () => {
     expect(updatedTrack).toEqual(newTrack);
   });
 
-  it('play should call playAsync if no sound is already loaded', async () => {
+  it('play should call playAsync if no audio is already loaded', async () => {
     const store = useAudioPlayerStore.getState();
 
     // Play the current track
@@ -137,7 +137,7 @@ describe('useAudioPlayerStore', () => {
     expect(mockSound.unloadAsync).not.toHaveBeenCalled();
   });
 
-  it('play should unload previous sound', async () => {
+  it('play should unload previous audio', async () => {
     const store = useAudioPlayerStore.getState();
 
     // Play the current track
@@ -150,15 +150,29 @@ describe('useAudioPlayerStore', () => {
     expect(mockSound.playAsync).toHaveBeenCalled();
   });
 
-  it('pause should call pauseAsync if a sound is loaded', async () => {
+  it('pause should call pauseAsync if an audio is loaded', async () => {
     const store = useAudioPlayerStore.getState();
 
-    // Simulate a sound is already loaded and playing
+    // Simulate a sound is already loaded.
     store.currentTrack.sound = mockSound as Audio.Sound;
 
     await store.pause();
 
     // Expect pauseAsync to be called
     expect(mockSound.pauseAsync).toHaveBeenCalledTimes(1);
+  });
+
+  it('resume should not reload the audio', async () => {
+    const store = useAudioPlayerStore.getState();
+
+    // Simulate a sound is already loaded.
+    store.currentTrack.sound = mockSound as Audio.Sound;
+
+    await store.resume();
+
+    // Expect playAsync is called w/o reloading the sound
+    expect(mockSound.playAsync).toHaveBeenCalled();
+    expect(mockSound.stopAsync).not.toHaveBeenCalled();
+    expect(mockSound.unloadAsync).not.toHaveBeenCalled();
   });
 });
