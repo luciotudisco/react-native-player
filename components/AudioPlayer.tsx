@@ -86,7 +86,6 @@ export function AudioPlayer() {
           <SliderTrack style={styles.sliderTrack}>
             <SliderFilledTrack />
           </SliderTrack>
-          <SliderThumb size="lg" />
         </Slider>
         <View style={styles.sliderDuration}>
           <Text style={styles.durationLabel}>{dayjs.duration(positionMillis, 'milliseconds').format('mm:ss')}</Text>
