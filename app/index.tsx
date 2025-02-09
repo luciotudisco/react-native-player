@@ -1,24 +1,39 @@
+import AudioPlayer from '@/components/AudioPlayer';
 import PlayList from '@/components/PlayList';
+import { StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModal, BottomSheetView, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { useCallback, useRef } from 'react';
 import { useAudioPlayerStore } from '@/store/store';
-import { Stack } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
 
 export default function HomeScreen() {
-  const currentPlaylist = useAudioPlayerStore((state) => state.playlist);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const pause = useAudioPlayerStore((state) => state.pause);
+  const showAudioPlayer = useCallback(() => bottomSheetModalRef.current?.present(), []);
 
   return (
-    <>
-      <Stack.Screen options={{ title: currentPlaylist.name }} />
-      <View style={styles.container}>
-        <PlayList />
-      </View>
-    </>
+    <GestureHandlerRootView style={styles.container}>
+      <BottomSheetModalProvider>
+        <PlayList showAudioPlayerCallback={showAudioPlayer} />
+        <BottomSheetModal
+          enableDynamicSizing={false}
+          onDismiss={async () => await pause()}
+          ref={bottomSheetModalRef}
+          snapPoints={['50%']}>
+          <BottomSheetView className="flex-grow">
+            <AudioPlayer />
+          </BottomSheetView>
+        </BottomSheetModal>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
+    height: '100%',
     width: '100%',
   },
 });

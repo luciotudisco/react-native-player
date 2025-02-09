@@ -1,23 +1,23 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import PlayList from '@/components/PlayList';
 import { useAudioPlayerStore } from '@/store/store';
+import { DEMO_PLAYLIST } from '@/model/track';
 
 jest.mock('@/store/store');
 
 describe('PlayList Component', () => {
-  const setTrackMock = jest.fn();
+  const mockShowAudioPlayerCallback = jest.fn();
+  const mockPlay = jest.fn();
+  const mockSetTrack = jest.fn();
 
   beforeEach(() => {
-    (useAudioPlayerStore as unknown as jest.Mock).mockImplementation((selector) =>
+    (useAudioPlayerStore as unknown as jest.Mock).mockImplementation((selector: any) =>
       selector({
-        playlist: {
-          items: [
-            { name: 'Track 1', imageURI: 'https://example.com/track1.jpg', artist: 'Artist 1' },
-            { name: 'Track 2', imageURI: 'https://example.com/track2.jpg', artist: 'Artist 2' },
-          ],
-        },
-        setTrack: setTrackMock,
+        playlist: DEMO_PLAYLIST,
+        currentTrack: { isPlaying: false, sound: undefined, item: DEMO_PLAYLIST.items[0] },
+        play: mockPlay,
+        setTrack: mockSetTrack,
       }),
     );
   });
@@ -27,26 +27,28 @@ describe('PlayList Component', () => {
   });
 
   it('renders the playlist items correctly', () => {
-    const { getByText } = render(<PlayList />);
+    const { getByText } = render(<PlayList showAudioPlayerCallback={mockShowAudioPlayerCallback} />);
 
-    // Check for track names in the document
-    expect(getByText('Track 1')).toBeTruthy();
-    expect(getByText('Track 2')).toBeTruthy();
+    // Check for track names
+    DEMO_PLAYLIST.items.forEach((item) => {
+      expect(getByText(item.name)).toBeTruthy();
+    });
 
     // Check for artist names
-    expect(getByText('Artist 1')).toBeTruthy();
-    expect(getByText('Artist 2')).toBeTruthy();
+    DEMO_PLAYLIST.items.forEach((item) => {
+      expect(getByText(item.artist)).toBeTruthy();
+    });
   });
 
-  it('calls setTrack with the correct index when a track is pressed', () => {
-    const { getByText } = render(<PlayList />);
+  it('calls setTrack and play when a track is selected', async () => {
+    const { getByText } = render(<PlayList showAudioPlayerCallback={mockShowAudioPlayerCallback} />);
 
-    // Press on the first track
-    fireEvent.press(getByText('Track 1'));
-    expect(setTrackMock).toHaveBeenCalledWith(0);
+    // Press on the second track.
+    fireEvent.press(getByText(DEMO_PLAYLIST.items[0].name));
 
-    // Press on the second track
-    fireEvent.press(getByText('Track 2'));
-    expect(setTrackMock).toHaveBeenCalledWith(1);
+    // Check if the setTrack and play functions were called.
+    await waitFor(() => expect(mockSetTrack).toHaveBeenCalledWith(DEMO_PLAYLIST.items[0]));
+    expect(mockPlay).toHaveBeenCalled();
+    expect(mockShowAudioPlayerCallback).toHaveBeenCalled();
   });
 });

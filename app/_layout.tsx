@@ -11,7 +11,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/Geologica-Regular.ttf'),
+    Geologica: require('../assets/fonts/Geologica-Regular.ttf'),
   });
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function RootLayout() {
   return (
     <GluestackUIProvider mode="light">
       <Stack>
-        <Stack.Screen name="/" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ title: 'Awesome React Native Player' }} />
         <Stack.Screen name="+not-found" />
       </Stack>
     </GluestackUIProvider>
