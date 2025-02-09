@@ -33,9 +33,10 @@ export default function AudioLineAnimation({
   intervalDuration?: number;
 }) {
   const barsRef = useRef<SharedValue<number>[]>([]);
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  barsRef.current = Array.from({ length: numberOfBars }, () => useSharedValue(0));
+  if (barsRef.current) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    barsRef.current = Array.from({ length: numberOfBars }, () => useSharedValue(0));
+  }
 
   /**
    * Randomly animate each bar on an interval.
@@ -45,7 +46,7 @@ export default function AudioLineAnimation({
       barsRef.current.forEach((bar) => {
         bar.value = withTiming(Math.random() * maxBarHeight, {
           duration: 200,
-          easing: Easing.inOut(Easing.ease),
+          easing: Easing.inOut(Easing.bounce),
         });
       });
     }, 200);
