@@ -5,7 +5,7 @@ import { useAudioPlayerStore } from '@/store/store';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { PlayIcon, PauseIcon, FastForwardIcon, SkipForwardIcon, SkipBackIcon, RewindIcon } from 'lucide-react-native';
-import { Slider, SliderFilledTrack, SliderThumb, SliderTrack } from '@/components/ui/slider';
+import { Slider, SliderFilledTrack, SliderTrack } from '@/components/ui/slider';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import PlayListItemThumbnail from '@/components/PlayListItemThumbnail';
@@ -16,11 +16,6 @@ dayjs.extend(duration);
  * The number of milliseconds to seek forward or backward when the user presses the fast forward or rewind buttons.
  */
 const SEEK_DELTA_MILLIS = 5000;
-
-/**
- * The factor by which to multiply the seek delta when the user long presses the fast forward or rewind buttons.
- */
-const SEEK_LONG_PRESS_FACTOR = 3;
 
 /**
  * The AudioPlayer component with play, pause, next, and previous buttons.
@@ -88,7 +83,7 @@ export function AudioPlayer() {
     <Box style={styles.card}>
       <PlayListItemThumbnail item={currentTrack.item} size={64} />
       <Box style={styles.slider}>
-        <Slider minValue={0} maxValue={durationMillis} value={positionMillis}>
+        <Slider minValue={0} maxValue={durationMillis} value={positionMillis} onChange={async (value) => await seek(value)}>
           <SliderTrack style={styles.sliderTrack}>
             <SliderFilledTrack />
           </SliderTrack>

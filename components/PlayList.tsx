@@ -28,7 +28,7 @@ const PlayList = (props: PlayListProps) => {
    */
   useEffect(() => {
     if (currentTrack.item) {
-      const index = playlist.items.findIndex(item => item.id === currentTrack.item.id);
+      const index = playlist.items.findIndex((item) => item.id === currentTrack.item.id);
       if (index !== -1 && flatListRef.current) {
         flatListRef.current.scrollToIndex({ index, animated: true });
       }
