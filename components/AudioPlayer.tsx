@@ -65,12 +65,16 @@ export function AudioPlayer() {
 
   const playNext = async () => {
     next();
-    await play();
+    if (currentTrack.isPlaying) {
+      await play();
+    }
   };
 
   const playPrevious = async () => {
     previous();
-    await play();
+    if (currentTrack.isPlaying) {
+      await play();
+    }
   };
 
   const seek = async (value: number) => {
@@ -109,7 +113,7 @@ export function AudioPlayer() {
         <IconButton
           onPress={() => seek(Math.max(positionMillis - SEEK_DELTA_MILLIS, 0))}
           accessibilityLabel="Rewind track"
-          disabled={!currentTrack.isPlaying}
+          disabled={!currentTrack.sound}
           icon={<RewindIcon size={28} color="white" />}
         />
         {!currentTrack.isPlaying ? (
@@ -124,7 +128,7 @@ export function AudioPlayer() {
         <IconButton
           onPress={() => seek(Math.min(positionMillis + SEEK_DELTA_MILLIS, durationMillis))}
           accessibilityLabel="Fast Forward"
-          disabled={!currentTrack.isPlaying}
+          disabled={!currentTrack.sound}
           icon={<FastForwardIcon size={28} color="white" />}
         />
         <IconButton

@@ -111,7 +111,7 @@ describe('AudioPlayer', () => {
   });
 
   it('plays the next track when the current track finishes', async () => {
-    setup();
+    setup({ currentTrack: { ...MOCK_SELECTOR.currentTrack, isPlaying: true } });
     render(<AudioPlayer />);
 
     // Simulate that the track just finished.
