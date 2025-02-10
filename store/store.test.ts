@@ -125,7 +125,7 @@ describe('useAudioPlayerStore', () => {
     expect(updatedTrack).toEqual(newTrack);
   });
 
-  it('play should call playAsync if no audio is already loaded', async () => {
+  it('play should start a new audio from the beginning', async () => {
     const store = useAudioPlayerStore.getState();
 
     // Play the current track
@@ -137,7 +137,7 @@ describe('useAudioPlayerStore', () => {
     expect(mockSound.unloadAsync).not.toHaveBeenCalled();
   });
 
-  it('play should unload previous audio', async () => {
+  it('play should restart the audio from the beginning, if an existing audio is set', async () => {
     const store = useAudioPlayerStore.getState();
 
     // Play the current track
@@ -150,7 +150,7 @@ describe('useAudioPlayerStore', () => {
     expect(mockSound.playAsync).toHaveBeenCalled();
   });
 
-  it('pause should call pauseAsync if an audio is loaded', async () => {
+  it('pause should stop the audio', async () => {
     const store = useAudioPlayerStore.getState();
 
     // Simulate a sound is already loaded.
@@ -162,7 +162,7 @@ describe('useAudioPlayerStore', () => {
     expect(mockSound.pauseAsync).toHaveBeenCalledTimes(1);
   });
 
-  it('resume should not reload the audio', async () => {
+  it('resume should restart the audio without reloading from the start', async () => {
     const store = useAudioPlayerStore.getState();
 
     // Simulate a sound is already loaded.
