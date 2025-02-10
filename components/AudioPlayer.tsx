@@ -83,7 +83,11 @@ export function AudioPlayer() {
     <Box style={styles.card}>
       <PlayListItemThumbnail item={currentTrack.item} size={64} />
       <Box style={styles.slider}>
-        <Slider minValue={0} maxValue={durationMillis} value={positionMillis} onChange={async (value) => await seek(value)}>
+        <Slider
+          minValue={0}
+          maxValue={durationMillis}
+          value={positionMillis}
+          onChange={async (value) => await seek(value)}>
           <SliderTrack style={styles.sliderTrack}>
             <SliderFilledTrack />
           </SliderTrack>
