@@ -2,11 +2,17 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-The Audio player is based on the [Expo AV](https://docs.expo.dev/versions/latest/sdk/av) library.
+This library provides a React Native audio player, leveraging [Expo AV](https://docs.expo.dev/versions/latest/sdk/av) for audio playback, [Zustand](https://zustand-demo.pmnd.rs/) for state management, and [Gluestack.io](https://https://gluestack.io) for the UI framework.
 
-The UI components are based on [gluestack.io](https://https://gluestack.io) library.
+The player features track selection, playback controls, and an auto-scrolling track list that highlights the currently playing track.
 
-The state of the player is managed via [zustand](https://zustand-demo.pmnd.rs/).
+The interface includes a **bottom sheet modal** with a single snap point. Planned improvements include two additional snap points: a minimalist player view at ~**20%** (offering basic play/stop controls) and a **full-screen view** for advanced features like waveform visualization and extended controls.
+
+For better user experience, the track list automatically scrolls to the current track. A planned enhancement is a **long-press feature** for the fast forward and rewind buttons, enabling users to seek through tracks more quickly when holding these controls.
+
+The library's modular architecture centralizes **most of the business logic in Zustand** for efficient state management. Future updates will include improved track progress visualization and customizable snap points.
+
+Other planned improvements include enhanced background playback capabilities, with features such as background audio, notifications, and lock-screen controls.
 
 ## Get started
 
@@ -28,3 +34,7 @@ In the output, you'll find options to open the app in a
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+
+# Screenshots
+
+
