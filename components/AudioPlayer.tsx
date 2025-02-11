@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { Box } from './ui/box';
 import { useAudioPlayerStore } from '@/store/store';
@@ -13,15 +13,15 @@ import { IconButton } from '@/components/IconButton';
 dayjs.extend(duration);
 
 /**
- * The number of milliseconds to seek forward or backward when the user presses the fast forward or rewind buttons.
+ * The number of seconds to seek forward or backward when the user presses the fast forward or rewind buttons.
  */
-const SEEK_DELTA_MILLIS = 5000;
+const SEEK_DELTA_SECONDS = 5;
 
 /**
  * The AudioPlayer component with play, pause, next, and previous buttons.
  */
 export function AudioPlayer() {
-  const [playbackStatus, setPlaybackStatus] = useState<AVPlaybackStatus | null>(null);
+  const [status, setStatus] = useState<AVPlaybackStatus | null>(null);
   const currentTrack = useAudioPlayerStore((state) => state.currentTrack);
   const isFirstTrack = useAudioPlayerStore((state) => state.isFirstTrack);
   const isLastTrack = useAudioPlayerStore((state) => state.isLastTrack);
@@ -31,10 +31,18 @@ export function AudioPlayer() {
   const previous = useAudioPlayerStore((state) => state.previous);
   const resume = useAudioPlayerStore((state) => state.resume);
 
-  const positionMillis = playbackStatus?.isLoaded ? (playbackStatus.positionMillis ?? 0) : 0;
-  const durationMillis = playbackStatus?.isLoaded ? (playbackStatus.durationMillis ?? 0) : 0;
+  const currentSeconds = status?.isLoaded ? Math.floor(status.positionMillis / 1000) : 0;
+  const durationSeconds = status?.isLoaded && status.durationMillis ? Math.floor(status.durationMillis / 1000) : 0;
   const showPreviousButton = !isFirstTrack();
   const showNextButton = !isLastTrack();
+
+  const formattedPosition = useMemo(() => {
+    return dayjs.duration(currentSeconds, 'seconds').format('mm:ss');
+  }, [currentSeconds]);
+
+  const formattedDuration = useMemo(() => {
+    return dayjs.duration(durationSeconds, 'seconds').format('mm:ss');
+  }, [durationSeconds]);
 
   useEffect(() => {
     (async () => {
@@ -54,32 +62,33 @@ export function AudioPlayer() {
     if (currentTrack.sound) {
       currentTrack.sound.setOnPlaybackStatusUpdate((status) => {
         if (status.isLoaded) {
-          setPlaybackStatus(status);
+          setStatus(status);
           if (status.didJustFinish) {
-            playNext(); // Play the next track when the current track finishes
+            onNext(); // Play the next track when the current track finishes
           }
         }
       });
     }
   }, [currentTrack.sound]);
 
-  const playNext = async () => {
+  const onNext = async () => {
     next();
     if (currentTrack.isPlaying) {
       await play();
     }
   };
 
-  const playPrevious = async () => {
+  const onPrevious = async () => {
     previous();
     if (currentTrack.isPlaying) {
       await play();
     }
   };
 
-  const seek = async (value: number) => {
+  const onSeek = async (value: number) => {
     if (currentTrack.sound) {
-      await currentTrack.sound.setPositionAsync(value);
+      const positionMillis = value * 1000;
+      await currentTrack.sound.setPositionAsync(positionMillis);
     }
   };
 
@@ -89,29 +98,27 @@ export function AudioPlayer() {
       <Box style={styles.slider}>
         <Slider
           minValue={0}
-          maxValue={durationMillis}
-          value={positionMillis}
-          onChange={async (value) => await seek(value)}>
+          maxValue={durationSeconds}
+          value={currentSeconds}
+          onChange={async (value) => await onSeek(value)}>
           <SliderTrack style={styles.sliderTrack}>
             <SliderFilledTrack />
           </SliderTrack>
         </Slider>
         <View style={styles.sliderDuration}>
-          <Text style={styles.durationLabel}>{dayjs.duration(positionMillis, 'milliseconds').format('mm:ss')}</Text>
-          {durationMillis > 0 && (
-            <Text style={styles.durationLabel}>{dayjs.duration(durationMillis, 'milliseconds').format('mm:ss')}</Text>
-          )}
+          <Text style={styles.durationLabel}>{formattedPosition}</Text>
+          {durationSeconds > 0 && <Text style={styles.durationLabel}>{formattedDuration}</Text>}
         </View>
       </Box>
       <Box style={styles.buttonsBar}>
         <IconButton
-          onPress={playPrevious}
+          onPress={onPrevious}
           accessibilityLabel="Previous track"
           disabled={!showPreviousButton}
           icon={<SkipBackIcon size={28} color="white" />}
         />
         <IconButton
-          onPress={() => seek(Math.max(positionMillis - SEEK_DELTA_MILLIS, 0))}
+          onPress={() => onSeek(Math.max(currentSeconds - SEEK_DELTA_SECONDS, 0))}
           accessibilityLabel="Rewind track"
           disabled={!currentTrack.sound}
           icon={<RewindIcon size={28} color="white" />}
@@ -126,13 +133,13 @@ export function AudioPlayer() {
           <IconButton onPress={pause} accessibilityLabel="Pause track" icon={<PauseIcon size={48} color="white" />} />
         )}
         <IconButton
-          onPress={() => seek(Math.min(positionMillis + SEEK_DELTA_MILLIS, durationMillis))}
+          onPress={() => onSeek(Math.min(currentSeconds + SEEK_DELTA_SECONDS, durationSeconds))}
           accessibilityLabel="Fast Forward"
           disabled={!currentTrack.sound}
           icon={<FastForwardIcon size={28} color="white" />}
         />
         <IconButton
-          onPress={playNext}
+          onPress={onNext}
           accessibilityLabel="Next track"
           disabled={!showNextButton}
           icon={<SkipForwardIcon size={28} color="white" />}
@@ -163,7 +170,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   sliderTrack: {
-    minHeight: 6,
+    minHeight: 8,
   },
   sliderDuration: {
     flexDirection: 'row',
