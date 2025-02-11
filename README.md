@@ -1,22 +1,22 @@
 # Welcome to the Awesome React Navite Player 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Simple  React Native audio player built using [Expo](https://expo.dev).
 
-This library provides a React Native audio player, leveraging [Expo AV](https://docs.expo.dev/versions/latest/sdk/av) for audio playback, [Zustand](https://zustand-demo.pmnd.rs/) for state management, and [Gluestack.io](https://gluestack.io) for the UI framework.
+This player leverages [Expo AV](https://docs.expo.dev/versions/latest/sdk/av) for audio playback, [Zustand](https://zustand-demo.pmnd.rs/) for state management, and [Gluestack.io](https://gluestack.io) as the UI framework.
 
 The player features track selection, playback controls, and an auto-scrolling track list that highlights the currently playing track.
 
-The interface includes a **bottom sheet modal** with a single snap point.
-
-**[TODO]** Planned improvements include two additional snap points: a minimalist player view at ~**20%** (offering basic play/stop controls) and a **full-screen view** for advanced features like waveform visualization and extended controls.
-
-For a better user experience, the track list automatically scrolls to the current track.
-
-**[TODO]** A planned enhancement is a **long-press feature** for the fast forward and rewind buttons, enabling users to seek through tracks more quickly when holding these controls.
+The UI uses a **bottom sheet modal** to display the audio player once a track is selected. The current implementation uses a single "snap point" for the bottom sheet modal.
 
 The library's modular architecture centralizes **most of the business logic in Zustand** for efficient state management.
 
-**[TODO]** Other planned improvements include enhanced background playback capabilities, with features such as background audio, notifications, and lock-screen controls.
+**[TODO]** Planned improvements include:
+
+- Two additional snap points: a minimalist player view at ~**20%** (offering basic play/stop controls) and a **full-screen view** for advanced features like waveform visualization and extended controls.
+
+- A **long-press feature** for the fast forward and rewind buttons, enabling users to seek through tracks more quickly when holding these controls.
+
+- Enhanced background playback capabilities, with features such as background audio, notifications, and lock-screen controls.
 
 ## Web Preview
 
