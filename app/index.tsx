@@ -23,7 +23,7 @@ export default function HomeScreen() {
           enableDynamicSizing={false}
           onDismiss={() => pause()}
           ref={bottomSheetModalRef}
-          snapPoints={['50%']}>
+          snapPoints={['60%']}>
           <BottomSheetView className="flex-grow">
             <AudioPlayer />
           </BottomSheetView>
