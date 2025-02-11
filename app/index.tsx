@@ -6,7 +6,6 @@ import {
   BottomSheetModal,
   BottomSheetView,
   BottomSheetModalProvider,
-  BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
 import { useCallback, useRef } from 'react';
 import { useAudioPlayerStore } from '@/store/store';
@@ -22,7 +21,7 @@ export default function HomeScreen() {
         <PlayList showAudioPlayerCallback={showAudioPlayer} />
         <BottomSheetModal
           enableDynamicSizing={false}
-          onDismiss={async () => await pause()}
+          onDismiss={() => pause()}
           ref={bottomSheetModalRef}
           snapPoints={['50%']}>
           <BottomSheetView className="flex-grow">
