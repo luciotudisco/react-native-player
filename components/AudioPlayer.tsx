@@ -99,8 +99,7 @@ export function AudioPlayer() {
         <Slider
           minValue={0}
           maxValue={durationSeconds}
-          value={currentSeconds}
-          onChange={async (value) => await onSeek(value)}>
+          value={currentSeconds}>
           <SliderTrack style={styles.sliderTrack}>
             <SliderFilledTrack />
           </SliderTrack>
@@ -156,6 +155,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexGrow: 1,
     gap: 20,
+    minHeigth: 350,
     padding: 50,
     paddingBottom: 60,
     width: '100%',
