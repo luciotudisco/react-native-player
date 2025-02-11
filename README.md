@@ -2,7 +2,7 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-This library provides a React Native audio player, leveraging [Expo AV](https://docs.expo.dev/versions/latest/sdk/av) for audio playback, [Zustand](https://zustand-demo.pmnd.rs/) for state management, and [Gluestack.io](https://https://gluestack.io) for the UI framework.
+This library provides a React Native audio player, leveraging [Expo AV](https://docs.expo.dev/versions/latest/sdk/av) for audio playback, [Zustand](https://zustand-demo.pmnd.rs/) for state management, and [Gluestack.io](https://gluestack.io) for the UI framework.
 
 The player features track selection, playback controls, and an auto-scrolling track list that highlights the currently playing track.
 
