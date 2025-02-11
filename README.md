@@ -37,9 +37,9 @@ In the output, you'll find options to open the app in a
 
 # Screenshots
 
-![Screenshot_2025-02-11_at_01 08 27-removebg-preview](https://github.com/user-attachments/assets/f8f6ab03-c855-477e-910d-08dfef121497)
-
-![Screenshot_2025-02-11_at_01 08 41-removebg-preview](https://github.com/user-attachments/assets/e6043d23-ef39-4816-bcd2-5b4c5d281bf2)
+Bottom sheet modal         |  List
+:-------------------------:|:-------------------------:
+![Screenshot_2025-02-11_at_01 08 27-removebg-preview](https://github.com/user-attachments/assets/f8f6ab03-c855-477e-910d-08dfef121497)  |  ![Screenshot_2025-02-11_at_01 08 41-removebg-preview](https://github.com/user-attachments/assets/e6043d23-ef39-4816-bcd2-5b4c5d281bf2)
 
 
 
