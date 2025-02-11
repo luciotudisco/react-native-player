@@ -6,13 +6,17 @@ This library provides a React Native audio player, leveraging [Expo AV](https://
 
 The player features track selection, playback controls, and an auto-scrolling track list that highlights the currently playing track.
 
-The interface includes a **bottom sheet modal** with a single snap point. Planned improvements include two additional snap points: a minimalist player view at ~**20%** (offering basic play/stop controls) and a **full-screen view** for advanced features like waveform visualization and extended controls.
+The interface includes a **bottom sheet modal** with a single snap point. 
 
-For a better user experience, the track list automatically scrolls to the current track. A planned enhancement is a **long-press feature** for the fast forward and rewind buttons, enabling users to seek through tracks more quickly when holding these controls.
+**[TODO]** Planned improvements include two additional snap points: a minimalist player view at ~**20%** (offering basic play/stop controls) and a **full-screen view** for advanced features like waveform visualization and extended controls.
 
-The library's modular architecture centralizes **most of the business logic in Zustand** for efficient state management. Future updates will include improved track progress visualization and customizable snap points.
+For a better user experience, the track list automatically scrolls to the current track. 
 
-Other planned improvements include enhanced background playback capabilities, with features such as background audio, notifications, and lock-screen controls.
+**[TODO]** A planned enhancement is a **long-press feature** for the fast forward and rewind buttons, enabling users to seek through tracks more quickly when holding these controls.
+
+The library's modular architecture centralizes **most of the business logic in Zustand** for efficient state management. 
+
+**[TODO]** Other planned improvements include enhanced background playback capabilities, with features such as background audio, notifications, and lock-screen controls.
 
 ## Get started
 
