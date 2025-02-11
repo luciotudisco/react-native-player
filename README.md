@@ -18,6 +18,10 @@ The library's modular architecture centralizes **most of the business logic in Z
 
 **[TODO]** Other planned improvements include enhanced background playback capabilities, with features such as background audio, notifications, and lock-screen controls.
 
+## Web Preview
+
+A web preview of the player is available at [https://react-native-player--01nhp0p5xe.expo.app](https://react-native-player--01nhp0p5xe.expo.app).
+
 ## Get started
 
 1. Install dependencies
