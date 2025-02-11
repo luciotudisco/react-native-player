@@ -97,9 +97,7 @@ export function AudioPlayer() {
       <PlayListItemThumbnail item={currentTrack.item} size={64} />
       <Box style={styles.slider}>
         <Slider
-          minValue={0}
-          maxValue={durationSeconds}
-          value={currentSeconds}>
+          minValue={0} maxValue={durationSeconds} value={currentSeconds}>
           <SliderTrack style={styles.sliderTrack}>
             <SliderFilledTrack />
           </SliderTrack>
