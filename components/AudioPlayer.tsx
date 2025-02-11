@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 import { Box } from './ui/box';
 import { useAudioPlayerStore } from '@/store/store';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { PlayIcon, PauseIcon, FastForwardIcon, SkipForwardIcon, SkipBackIcon, RewindIcon } from 'lucide-react-native';
 import { Slider, SliderFilledTrack, SliderTrack } from '@/components/ui/slider';
@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import PlayListItemThumbnail from '@/components/PlayListItemThumbnail';
 import { IconButton } from '@/components/IconButton';
+import { debounce } from 'lodash';
 dayjs.extend(duration);
 
 /**
@@ -92,11 +93,13 @@ export function AudioPlayer() {
     }
   };
 
+  const debouncedSeek = debounce(onSeek, 500, { leading: true });
+
   return (
     <Box style={styles.card}>
       <PlayListItemThumbnail item={currentTrack.item} size={64} />
       <Box style={styles.slider}>
-        <Slider minValue={0} maxValue={durationSeconds} value={currentSeconds}>
+        <Slider minValue={0} maxValue={durationSeconds} value={currentSeconds} className="cursor-none">
           <SliderTrack style={styles.sliderTrack}>
             <SliderFilledTrack />
           </SliderTrack>
@@ -114,7 +117,7 @@ export function AudioPlayer() {
           icon={<SkipBackIcon size={28} color="white" />}
         />
         <IconButton
-          onPress={() => onSeek(Math.max(currentSeconds - SEEK_DELTA_SECONDS, 0))}
+          onPress={() => debouncedSeek(Math.max(currentSeconds - SEEK_DELTA_SECONDS, 0))}
           accessibilityLabel="Rewind track"
           disabled={!currentTrack.sound}
           icon={<RewindIcon size={28} color="white" />}
@@ -129,7 +132,7 @@ export function AudioPlayer() {
           <IconButton onPress={pause} accessibilityLabel="Pause track" icon={<PauseIcon size={48} color="white" />} />
         )}
         <IconButton
-          onPress={() => onSeek(Math.min(currentSeconds + SEEK_DELTA_SECONDS, durationSeconds))}
+          onPress={() => debouncedSeek(Math.min(currentSeconds + SEEK_DELTA_SECONDS, durationSeconds))}
           accessibilityLabel="Fast Forward"
           disabled={!currentTrack.sound}
           icon={<FastForwardIcon size={28} color="white" />}
@@ -152,7 +155,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flexGrow: 1,
     gap: 20,
-    minHeigth: 350,
+    minHeight: 350,
     padding: 50,
     paddingBottom: 60,
     width: '100%',

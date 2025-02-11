@@ -2,7 +2,7 @@
 module.exports = {
   extends: ['expo', 'prettier'],
   plugins: ['prettier'],
-  ignorePatterns: ['/components/ui/*'],
+  ignorePatterns: ['/components/ui/*', 'dist/*'],
   rules: {
     'prettier/prettier': 'error',
   },

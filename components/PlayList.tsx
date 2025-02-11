@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { FlatList, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { Box } from '@/components/ui/box';
 import { Image } from '@/components/ui/image';
 import { useAudioPlayerStore } from '@/store/store';
@@ -58,16 +58,14 @@ const PlayList = (props: PlayListProps) => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        contentContainerStyle={styles.listContent}
-        data={playlist.items}
-        ItemSeparatorComponent={Divider}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        ref={flatListRef}
-      />
-    </SafeAreaView>
+    <FlatList
+      contentContainerStyle={styles.listContent}
+      data={playlist.items}
+      ItemSeparatorComponent={Divider}
+      keyExtractor={(item) => item.id}
+      renderItem={renderItem}
+      ref={flatListRef}
+    />
   );
 };
 
