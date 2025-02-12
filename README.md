@@ -1,3 +1,5 @@
+![CI/CD](https://github.com/luciotudisco/react-native-player/actions/workflows/deploy.yml/badge.svg)
+
 # Welcome to the Awesome React Navite Player 👋
 
 Simple  React Native audio player built using [Expo](https://expo.dev).
@@ -43,8 +45,10 @@ In the output, you'll find options to open the app in a
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
+A basic CI/CD pipeline with tests and (web) deploy is implemented using GitHub actions.
+
 # Screenshots
 
 |                                                           Bottom sheet modal                                                           |                                                                  List                                                                  |
 | :------------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------: |
-| ![Screenshot_2025-02-11_at_01 08 27-removebg-preview](https://github.com/user-attachments/assets/f8f6ab03-c855-477e-910d-08dfef121497) | ![Screenshot_2025-02-11_at_01 08 41-removebg-preview](https://github.com/user-attachments/assets/e6043d23-ef39-4816-bcd2-5b4c5d281bf2) |
+| ![Screenshot_2025-02-11_at_01 08 27-removebg-preview](https://github.com/user-attachments/assets/f8f6ab03-c855-477e-910d-08dfef121497) | ![Screenshot_2025-02-11_at_01 08 41-removebg-preview](https://github.com/user-attachments/assets/e6043d23-ef39-4816-bcd2-5b4c5d281bf2) | 
