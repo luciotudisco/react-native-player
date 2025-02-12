@@ -81,6 +81,17 @@ describe('AudioPlayer', () => {
 
     fireEvent.press(prevButton);
     expect(MOCK_SELECTOR.previous).toHaveBeenCalled();
+    expect(MOCK_SELECTOR.play).not.toHaveBeenCalled();
+  });
+
+  it('calls previous and play when the play button is pressed, if the audio player is already playing', async () => {
+    setup({ currentTrack: { ...MOCK_SELECTOR.currentTrack, isPlaying: true } });
+    const { getByLabelText } = render(<AudioPlayer />);
+    const prevButton = getByLabelText('Previous track');
+
+    fireEvent.press(prevButton);
+    expect(MOCK_SELECTOR.previous).toHaveBeenCalled();
+    expect(MOCK_SELECTOR.play).toHaveBeenCalled();
   });
 
   it('calls next when the next button is pressed', async () => {
@@ -90,6 +101,17 @@ describe('AudioPlayer', () => {
 
     fireEvent.press(nextButton);
     expect(MOCK_SELECTOR.next).toHaveBeenCalled();
+    expect(MOCK_SELECTOR.play).not.toHaveBeenCalled();
+  });
+
+  it('calls next and play when the next button is pressed, if the audio player is already playing', async () => {
+    setup({ currentTrack: { ...MOCK_SELECTOR.currentTrack, isPlaying: true } });
+    const { getByLabelText } = render(<AudioPlayer />);
+    const nextButton = getByLabelText('Next track');
+
+    fireEvent.press(nextButton);
+    expect(MOCK_SELECTOR.next).toHaveBeenCalled();
+    expect(MOCK_SELECTOR.play).toHaveBeenCalled();
   });
 
   it('seeks backward when the rewind button is pressed', async () => {
